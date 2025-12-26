@@ -20,7 +20,7 @@ export function ChatContainer() {
 
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
+    <div className="flex flex-col h-[90vh] lg:h-screen bg-gray-50">
       <div className="shrink-0">
         <ChatHeader messageCount={messages.length} />
       </div>

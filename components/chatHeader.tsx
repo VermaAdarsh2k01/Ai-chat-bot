@@ -1,14 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { MessageSquarePlus, Store } from "lucide-react";
+import { Store } from "lucide-react";
 
 interface ChatHeaderProps {
-  onNewChat: () => void;
   messageCount?: number;
 }
 
-export function ChatHeader({ onNewChat, messageCount = 0 }: ChatHeaderProps) {
+export function ChatHeader({ messageCount = 0 }: ChatHeaderProps) {
   return (
     <div className="border-b bg-white shadow-sm">
       <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
@@ -27,18 +25,6 @@ export function ChatHeader({ onNewChat, messageCount = 0 }: ChatHeaderProps) {
             </p>
           </div>
         </div>
-
-        {messageCount > 0 && (
-          <Button
-            onClick={onNewChat}
-            variant="outline"
-            size="sm"
-            className="gap-2"
-          >
-            <MessageSquarePlus className="h-4 w-4" />
-            New Chat
-          </Button>
-        )}
       </div>
     </div>
   );

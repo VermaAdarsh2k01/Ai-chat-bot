@@ -3,7 +3,7 @@
 
 import { Sender } from "@/lib/generated/prisma/enums";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Bot, User } from "lucide-react";
+import { Bot, User , Headset} from "lucide-react";
 
 interface ChatMessageProps {
   sender: Sender;
@@ -22,7 +22,7 @@ export function ChatMessage({ sender, text, timestamp }: ChatMessageProps) {
           {isUser ? (
             <User className="h-4 w-4 text-blue-500" />
           ) : (
-            <Bot className="h-4 w-4 text-white" />
+            <Headset className="h-4 w-4 text-blue-500" />
           )}
         </AvatarFallback>
       </Avatar>
@@ -35,10 +35,10 @@ export function ChatMessage({ sender, text, timestamp }: ChatMessageProps) {
           className={`px-4 py-2.5 rounded-2xl ${
             isUser
               ? "bg-blue-500 text-white rounded-br-sm"
-              : "bg-gray-100 text-gray-900 rounded-bl-sm"
+              : "bg-gray-100 text-gray-500 rounded-bl-sm"
           }`}
         >
-          <p className="text-sm whitespace-pre-wrap break-words leading-relaxed">
+          <p className="text-sm whitespace-pre-wrap wrap-break-words leading-relaxed">
             {text}
           </p>
         </div>

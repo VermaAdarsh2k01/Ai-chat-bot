@@ -8,19 +8,19 @@ import { Send } from "lucide-react";
 
 interface ChatInputProps {
   onSend: (message: string) => void;
-  disabled?: boolean;
+  loading?: boolean;
   placeholder?: string;
 }
 
 export function ChatInput({
   onSend,
-  disabled = false,
+  loading = false,
   placeholder = "Type your message...",
 }: ChatInputProps) {
   const [input, setInput] = useState("");
-
+  
   const handleSend = () => {
-    if (!input.trim() || disabled) return;
+    if (!input.trim() || loading) return;
     onSend(input.trim());
     setInput("");
   };
@@ -39,15 +39,15 @@ export function ChatInput({
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder={placeholder}
-          disabled={disabled}
+          placeholder={loading ? "AI is responding..." : placeholder}
+          disabled={false}
           className="min-h-11 max-h-50 resize-none"
           rows={1}
           maxLength={5000}
         />
         <Button
           onClick={handleSend}
-          disabled={disabled || !input.trim()}
+          disabled={loading || !input.trim()}
           size="icon"
           className="h-11 w-11 shrink-0"
         >

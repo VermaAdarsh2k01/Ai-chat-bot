@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { Sender } from "@/lib/generated/prisma/enums";
 import { generateReply } from "@/lib/services/llm";
+
+type Sender = "user" | "ai";
 
 export async function POST(req: NextRequest) {
   try {
@@ -52,7 +53,7 @@ export async function POST(req: NextRequest) {
     await prisma.message.create({
       data: {
         conversationId,
-        sender: Sender.user,
+        sender: "user",
         text: message.trim(),
       },
     });
@@ -77,7 +78,7 @@ export async function POST(req: NextRequest) {
     await prisma.message.create({
       data: {
         conversationId,
-        sender: Sender.ai,
+        sender: "ai",
         text: aiResponse,
       },
     });

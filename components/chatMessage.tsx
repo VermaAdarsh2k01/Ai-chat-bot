@@ -1,7 +1,8 @@
 "use client";
 
-import { Sender } from "@/lib/generated/prisma/enums";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+
+type Sender = "user" | "ai";
 import { Button } from "@/components/ui/button";
 import { Bot, User, Headset, Volume2, VolumeX, Pause, Play } from "lucide-react";
 import { useTextToSpeech } from "@/lib/hooks/useTextToSpeech";
@@ -13,7 +14,7 @@ interface ChatMessageProps {
 }
 
 export function ChatMessage({ sender, text, timestamp }: ChatMessageProps) {
-  const isUser = sender === Sender.user;
+  const isUser = sender === "user";
   const { speak, stop, pause, resume, isSupported, isPlaying, isPaused } = useTextToSpeech();
 
   return (

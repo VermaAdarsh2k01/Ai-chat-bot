@@ -1,5 +1,6 @@
 import { OpenRouter } from "@openrouter/sdk";
-import { Sender } from "../generated/prisma/enums";
+
+type Sender = "user" | "ai";
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 
@@ -31,7 +32,7 @@ export async function generateReply(
         `
       },
       ...history.map(h => ({
-        role: h.sender === Sender.user ? "user" as const : "assistant" as const,
+        role: h.sender === "user" ? "user" as const : "assistant" as const,
         content: h.text
       }))
     ];

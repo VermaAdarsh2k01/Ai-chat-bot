@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { Sender } from "@/lib/generated/prisma/enums";
 import { toast } from "sonner";
+
+type Sender = "user" | "ai";
 import { chatService } from "@/lib/services/chatService";
 
 export type Message = {
@@ -45,7 +46,7 @@ export function useChat() {
 
   const sendMessage = async (messageText: string) => {
     const userMessage: Message = {
-      sender: Sender.user,
+      sender: "user",
       text: messageText,
       createdAt: new Date().toISOString(),
     };
@@ -57,7 +58,7 @@ export function useChat() {
       const data = await chatService.sendMessage(messageText, sessionId);
       
       const aiMessage: Message = {
-        sender: Sender.ai,
+        sender: "ai",
         text: data.reply,
         createdAt: new Date().toISOString(),
       };

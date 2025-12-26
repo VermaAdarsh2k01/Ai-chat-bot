@@ -11,6 +11,7 @@ A modern, real-time chat application built with Next.js 16, featuring AI-powered
 - ⚡ Real-time typing indicators
 - 🔄 Auto-scroll functionality
 - 🛡️ Input validation and error handling
+- 🔊 Text-to-speech for AI responses with play/pause/stop controls (completely Vibecoded)
 
 ## Tech Stack
 
@@ -265,7 +266,7 @@ NODE_ENV="production"
 - **Search Functionality**: Search through conversation history
 
 #### Nice to Have
-- **Voice Messages**: Speech-to-text and text-to-speech integration
+- **Voice Messages**: Speech-to-text integration (text-to-speech already implemented)
 - **Conversation Sharing**: Share conversations via unique links
 - **Admin Dashboard**: Monitor usage, costs, and system health
 - **A/B Testing**: Test different prompts and models

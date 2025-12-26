@@ -1,9 +1,10 @@
-// components/chat/ChatMessage.tsx
 "use client";
 
 import { Sender } from "@/lib/generated/prisma/enums";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Bot, User , Headset} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Bot, User, Headset, Volume2, VolumeX, Pause, Play } from "lucide-react";
+import { useTextToSpeech } from "@/lib/hooks/useTextToSpeech";
 
 interface ChatMessageProps {
   sender: Sender;
@@ -13,6 +14,7 @@ interface ChatMessageProps {
 
 export function ChatMessage({ sender, text, timestamp }: ChatMessageProps) {
   const isUser = sender === Sender.user;
+  const { speak, stop, pause, resume, isSupported, isPlaying, isPaused } = useTextToSpeech();
 
   return (
     <div className={`flex gap-3 ${isUser ? "flex-row-reverse" : "flex-row"}`}>
@@ -38,6 +40,55 @@ export function ChatMessage({ sender, text, timestamp }: ChatMessageProps) {
               : "bg-gray-100 text-gray-500 rounded-bl-sm"
           }`}
         >
+          {/* TTS Controls - Only show for AI messages */}
+          {!isUser && isSupported && (
+            <div className="flex items-center justify-start gap-1 mb-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-6 w-6 p-0 hover:bg-gray-200"
+                onClick={() => {
+                  if (isPlaying && !isPaused) {
+                    pause();
+                  } else if (isPlaying && isPaused) {
+                    resume();
+                  } else if (!isPlaying) {
+                    speak(text);
+                  }
+                }}
+                title={
+                  isPlaying && !isPaused
+                    ? "Pause speech"
+                    : isPlaying && isPaused
+                    ? "Resume speech"
+                    : "Play speech"
+                }
+              >
+                {isPlaying && !isPaused ? (
+                  <Pause className="h-3 w-3 text-gray-600" />
+                ) : isPlaying && isPaused ? (
+                  <Play className="h-3 w-3 text-gray-600" />
+                ) : (
+                  <Volume2 className="h-3 w-3 text-gray-600" />
+                )}
+              </Button>
+              
+              {/* Stop button - Only show when playing */}
+              {isPlaying && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-6 w-6 p-0 hover:bg-gray-200"
+                  onClick={stop}
+                  title="Stop speech"
+                >
+                  <VolumeX className="h-3 w-3 text-gray-600" />
+                </Button>
+              )}
+            </div>
+          )}
+          
+          {/* Message content */}
           <p className="text-sm whitespace-pre-wrap wrap-break-words leading-relaxed">
             {text}
           </p>

@@ -1,4 +1,3 @@
-// components/chat/ChatContainer.tsx
 "use client";
 
 import { ChatInput } from "./chatInput";

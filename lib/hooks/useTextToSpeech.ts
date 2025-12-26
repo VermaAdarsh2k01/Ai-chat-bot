@@ -22,7 +22,7 @@ interface UseTextToSpeechReturn {
 }
 
 export function useTextToSpeech(options: UseTextToSpeechOptions = {}): UseTextToSpeechReturn {
-  const { rate = 1, pitch = 1, volume = 1, voice = null } = options;
+  const { rate = 0.9, pitch = 1.1, volume = 0.8, voice = null } = options;
   
   const [isSupported, setIsSupported] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -32,20 +32,17 @@ export function useTextToSpeech(options: UseTextToSpeechOptions = {}): UseTextTo
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
   useEffect(() => {
-    // Check if speech synthesis is supported
+
     if (typeof window !== "undefined" && "speechSynthesis" in window) {
       setIsSupported(true);
       
-      // Load voices
       const loadVoices = () => {
         const availableVoices = speechSynthesis.getVoices();
         setVoices(availableVoices);
       };
 
-      // Load voices immediately if available
       loadVoices();
       
-      // Also listen for voices changed event (some browsers load voices asynchronously)
       speechSynthesis.addEventListener("voiceschanged", loadVoices);
       
       return () => {
@@ -57,7 +54,6 @@ export function useTextToSpeech(options: UseTextToSpeechOptions = {}): UseTextTo
   const speak = (text: string) => {
     if (!isSupported || !text.trim()) return;
 
-    // Stop any current speech
     stop();
 
     const utterance = new SpeechSynthesisUtterance(text);

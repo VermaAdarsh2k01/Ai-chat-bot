@@ -152,15 +152,19 @@ components/               # UI Components
 
 ### Key Design Decisions
 
-1. **Session-based Conversations**: Each chat session gets a unique UUID, allowing users to maintain multiple conversation threads.
+1. **Input Validation & Security**: Comprehensive client-side message validation with toast notifications including:
+   - **Length Validation**: Messages must be 3-2000 characters to prevent empty or excessively long inputs
+   - **Spam Detection**: Prevents messages with 10+ repeated characters using regex pattern matching
+   - **Prompt Injection Protection**: Detects and logs suspicious patterns (system prompts, instruction overrides) while allowing messages to be sent but flagging for review
+   - **User-Friendly Feedback**: Uses Sonner toast notifications for validation errors instead of inline messages for better UX
 
-2. **Optimistic UI Updates**: Messages appear immediately in the UI while being processed in the background.
+2. **Session-based Conversations**: Each chat session gets a unique UUID, allowing users to maintain multiple conversation threads.
 
-3. **Error Boundary Strategy**: Comprehensive error handling at API, service, and component levels with user-friendly fallbacks.
+3. **Optimistic UI Updates**: Messages appear immediately in the UI while being processed in the background.
 
-4. **Database Connection Pooling**: Uses `@prisma/adapter-pg` with connection pooling for better performance.
+4. **Error Boundary Strategy**: Comprehensive error handling at API, service, and component levels with user-friendly fallbacks.
 
-5. **Generated Prisma Client**: Custom output directory (`lib/generated/prisma`) to avoid conflicts and improve organization.
+5. **Database Connection Pooling**: Uses `@prisma/adapter-pg` with connection pooling for better performance.
 
 6. **Conversation History Limiting**: Only loads the last 10 messages for AI context to manage token usage and response time.
 

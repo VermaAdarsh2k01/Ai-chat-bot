@@ -4,11 +4,23 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Send } from "lucide-react";
+import { toast } from "sonner";
 
 interface ChatInputProps {
   onSend: (message: string) => void;
   loading?: boolean;
   placeholder?: string;
+}
+
+function validateMessage(message: string) {
+  
+  if (message.length < 3) return { valid: false, reason: "Too short" };
+  if (message.length > 2000) return { valid: false, reason: "Too long" };
+  
+  const repeatPattern = /(.)\1{10,}/; 
+  if (repeatPattern.test(message)) return { valid: false, reason: "Spam detected" };
+  
+  return { valid: true };
 }
 
 export function ChatInput({
@@ -17,9 +29,18 @@ export function ChatInput({
   placeholder = "Type your message...",
 }: ChatInputProps) {
   const [input, setInput] = useState("");
+
   
   const handleSend = () => {
     if (!input.trim() || loading) return;
+
+    const validation = validateMessage(input.trim());
+    
+    if (!validation.valid) {
+      toast.error(validation.reason || "Invalid message");
+      return;
+    }
+
     onSend(input.trim());
     setInput("");
   };
@@ -31,12 +52,16 @@ export function ChatInput({
     }
   };
 
+  const handleInputChange = (e:React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(e.target.value);
+  };
+
   return (
     <div className="border-t bg-white p-4">
       <div className="flex gap-2 items-end max-w-4xl mx-auto">
         <Textarea
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           placeholder={loading ? "AI is responding..." : placeholder}
           disabled={false}
